@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+Welcome to Tweetme
+<div id="tweets">
+    somehhhhhh
+</div>
+
+<script>
+const tweetsElement = document.getElementById("tweets")
+tweetsElement.innerHTML = 'Loading...'
+const xhr = new XMLHttpRequest()
+const method = 'GET'
+const url = "/tweets"
+const responseType = "json"
+//performing Request
+xhr.responseType = responseType
+xhr.open(method, url)
+xhr.onload = function() {
+    console.log(xhr.response)
+    const serverResponse = xhr.response
+    const listedItems = serverResponse.response
+    var finalTweetStr = ""
+    var i;
+    for(i=0;i<listedItems.length;i++) {
+        console.log(listedItems[i])
+        var currentItem = "<h1>" + listedItems[i].id + "--" + listedItems[i].content +"</h1>"
+        finalTweetStr += currentItem
+    }
+tweetsElement.innerHTML = finalTweetStr
+    // console.log(listedItems)
+}
+xhr.send()
+
+</script>
+{% endblock content %}
