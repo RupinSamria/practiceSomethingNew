@@ -2,8 +2,12 @@
 
 
 {% block content %}
-Welcome to Tweetme
-<div id="tweets">
+<div class='row text-center'>
+    <div class='col'>
+        <h1>Welcome to Tweetme</h1>
+    </div>
+</div>
+<div class='row' id="tweets">
     somehhhhhh
 </div>
 
@@ -14,6 +18,24 @@ const xhr = new XMLHttpRequest()
 const method = 'GET'
 const url = "/tweets"
 const responseType = "json"
+
+function handleDidLike (tweet_id, currentCount) {
+    console.log(tweet_id, currentCount)
+}
+
+function LikeBtn(tweet) {
+    return "<button class='btn btn-primary' onclick = handleDidLike("+ 
+    tweet.id + "," + tweet.likes + ")>" + tweet.likes + "Like</button>"
+}
+
+function formatTweetElement(tweet) {
+    var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 tweet' id ='tweet-" + tweet.id 
+    + "'><p>" + tweet.content + 
+    "</p><div class='btn-group'>" + LikeBtn(tweet) +
+    "</div></div>"
+    return formattedTweet
+}
+
 //performing Request
 xhr.responseType = responseType
 xhr.open(method, url)
@@ -24,8 +46,9 @@ xhr.onload = function() {
     var finalTweetStr = ""
     var i;
     for(i=0;i<listedItems.length;i++) {
-        console.log(listedItems[i])
-        var currentItem = "<h1>" + listedItems[i].id + "--" + listedItems[i].content +"</h1>"
+        var tweetObj = listedItems[i]
+        var currentItem = formatTweetElement(tweetObj)
+        // var currentItem = "<h1>" + listedItems[i].id + "--" + listedItems[i].content +"</h1>"
         finalTweetStr += currentItem
     }
 tweetsElement.innerHTML = finalTweetStr
